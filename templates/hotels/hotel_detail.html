@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}{{ hotel.name }}{% endblock %}
 {% block content %}
-<a href="{% url 'hotel_list' %}" style="color: var(--primary); text-decoration: none; display: inline-block; margin-bottom: 1rem;">← العودة للفنادق</a>
+<a href="{% url 'hotel_list' %}" style="color: #1a237e; text-decoration: none; display: inline-block; margin-bottom: 1rem;">&larr; Back to hotels</a>
 
 <div class="card" style="overflow: hidden; padding: 0;">
     {% if hotel.image %}
@@ -14,49 +14,49 @@
         <div class="flex-between">
             <div>
                 <h1 style="margin: 0;">{{ hotel.name }}</h1>
-                <p class="text-muted">📍 {{ hotel.address }}</p>
+                <p class="text-muted">{{ hotel.address }}</p>
             </div>
             <div class="stars" style="font-size: 1.5rem;">
                 {% for i in "12345"|make_list %}
-                    {% if forloop.counter <= hotel.rating %}★{% else %}<span class="stars-empty">★</span>{% endif %}
+                    {% if forloop.counter <= hotel.rating %}&#9733;{% else %}<span class="stars-empty">&#9733;</span>{% endif %}
                 {% endfor %}
-                <span style="font-size: 0.9rem; color: var(--text-light);">({{ hotel.avg_rating }})</span>
+                <span style="font-size: 0.9rem; color: #7f8c8d;">({{ hotel.avg_rating }})</span>
             </div>
         </div>
 
         <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid #eee;">
 
         <div class="grid-2 mb-2">
-            <div><strong>📞 الهاتف:</strong> {{ hotel.phone }}</div>
-            <div><strong>✉️ البريد:</strong> {{ hotel.email }}</div>
+            <div><strong>Phone:</strong> {{ hotel.phone }}</div>
+            <div><strong>Email:</strong> {{ hotel.email }}</div>
             {% if hotel.website %}
-            <div style="grid-column: 1/-1;"><strong>🌐 الموقع:</strong> <a href="{{ hotel.website }}" target="_blank">{{ hotel.website }}</a></div>
+            <div style="grid-column: 1/-1;"><strong>Website:</strong> <a href="{{ hotel.website }}" target="_blank">{{ hotel.website }}</a></div>
             {% endif %}
         </div>
 
-        <h2>عن الفندق</h2>
+        <h2>About</h2>
         <p style="line-height: 1.8;">{{ hotel.description }}</p>
     </div>
 </div>
 
-<h2 style="margin-top: 2rem;">🛏️ الغرف المتاحة ({{ rooms|length }})</h2>
+<h2 style="margin-top: 2rem;">Available Rooms ({{ rooms|length }})</h2>
 <div class="grid-3">
     {% for room in rooms %}
     <div class="card">
         <h3>{{ room.get_room_type_display }}</h3>
-        <p class="text-muted">رقم {{ room.room_number }} • يتسع لـ {{ room.capacity }} أشخاص</p>
-        <p style="font-size: 1.3rem; color: var(--accent); font-weight: 700;">{{ room.price_per_night }} ريال <span style="font-size: 0.8rem; font-weight: 400; color: var(--text-light);">/ الليلة</span></p>
+        <p class="text-muted">Room {{ room.room_number }} &middot; Up to {{ room.capacity }} guests</p>
+        <p style="font-size: 1.3rem; color: #ff6f00; font-weight: 700;">${{ room.price_per_night }} <span style="font-size: 0.8rem; font-weight: 400; color: #7f8c8d;">/ night</span></p>
         <p>{{ room.description|truncatewords:15 }}</p>
-        <a href="{% url 'room_detail' hotel.id room.id %}" class="btn" style="width: 100%; text-align: center;">حجز الآن</a>
+        <a href="{% url 'room_detail' hotel.id room.id %}" class="btn" style="width: 100%; text-align: center;">Book Now</a>
     </div>
     {% empty %}
     <div class="card text-center" style="grid-column: 1/-1;">
-        <p style="color: var(--text-light);">لا توجد غرف متاحة حالياً</p>
+        <p style="color: #7f8c8d;">No rooms available</p>
     </div>
     {% endfor %}
 </div>
 
-<h2 style="margin-top: 2rem;">⭐ التقييمات والآراء ({{ reviews|length }})</h2>
+<h2 style="margin-top: 2rem;">Reviews & Ratings ({{ reviews|length }})</h2>
 <div class="card mb-2">
     {% if reviews %}
         {% for review in reviews %}
@@ -67,7 +67,7 @@
                     <strong>{{ review.user.username }}</strong>
                     <span class="stars">
                         {% for i in "12345"|make_list %}
-                            {% if forloop.counter <= review.rating %}★{% else %}<span class="stars-empty">★</span>{% endif %}
+                            {% if forloop.counter <= review.rating %}&#9733;{% else %}<span class="stars-empty">&#9733;</span>{% endif %}
                         {% endfor %}
                     </span>
                 </div>
@@ -77,23 +77,24 @@
         </div>
         {% endfor %}
     {% else %}
-        <p class="text-muted text-center">لا توجد تقييمات بعد. كن أول من يقيم!</p>
+        <p class="text-muted text-center">No reviews yet. Be the first to review!</p>
     {% endif %}
 </div>
 
 {% if user.is_authenticated %}
 <div class="card" style="max-width: 500px;">
-    <h3>{% if user_review %}تعديل تقييمك{% else %}أضف تقييمك{% endif %}</h3>
+    <h3>{% if user_review %}Edit your review{% else %}Leave a review{% endif %}</h3>
     <form method="post">
         {% csrf_token %}
         <div class="flex gap-2" style="align-items: center; margin-bottom: 0.5rem;">
-            <label style="margin: 0;">التقييم:</label>
-            <input type="range" name="rating" min="1" max="5" value="{{ form.rating.value|default:5 }}" class="star-range" id="review-rating" style="flex: 1;">
-            <span id="review-star-display" style="font-size: 1.5rem;">★★★★★</span>
+            <label style="margin: 0;">Rating:</label>
+            <input type="range" name="rating" min="1" max="5" value="{{ form.rating.value|default:5 }}"
+                   class="star-range" id="review-rating" style="flex: 1;">
+            <span id="review-star-display" style="font-size: 1.5rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
         </div>
-        <label>التعليق</label>
+        <label>Comment</label>
         {{ form.comment }}
-        <button type="submit" class="btn">{% if user_review %}تحديث التقييم{% else %}إرسال التقييم{% endif %}</button>
+        <button type="submit" class="btn">{% if user_review %}Update Review{% else %}Submit Review{% endif %}</button>
     </form>
 </div>
 
@@ -104,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (range && display) {
         range.addEventListener('input', function() {
             const v = parseInt(this.value);
-            display.textContent = '★'.repeat(v) + '☆'.repeat(5-v);
+            display.innerHTML = '&#9733;'.repeat(v) + '<span class="stars-empty">&#9733;</span>'.repeat(5-v);
         });
     }
 });

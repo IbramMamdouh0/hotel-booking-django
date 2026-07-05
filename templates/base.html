@@ -1,197 +1,122 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}نظام حجز الفنادق{% endblock %}</title>
+    <title>{% block title %}Hotel Booking System{% endblock %}</title>
     <style>
-        :root {
-            --primary: #1a237e;
-            --primary-light: #283593;
-            --primary-dark: #0d1442;
-            --accent: #ff6f00;
-            --accent-light: #ffa040;
-            --success: #2e7d32;
-            --danger: #c62828;
-            --bg: #f4f5f9;
-            --card-bg: #ffffff;
-            --text: #2c3e50;
-            --text-light: #7f8c8d;
-            --shadow: 0 4px 20px rgba(0,0,0,0.08);
-            --shadow-hover: 0 8px 30px rgba(0,0,0,0.15);
-            --radius: 12px;
-            --transition: all 0.3s ease;
-        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Tahoma, 'Arabic Typesetting', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.7;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #f4f5f9; color: #2c3e50;
+            line-height: 1.7; min-height: 100vh;
+            display: flex; flex-direction: column;
         }
         nav {
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-            color: white;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 64px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            background: linear-gradient(135deg, #0d1442, #1a237e);
+            color: white; padding: 0 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            height: 64px; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            position: sticky; top: 0; z-index: 100;
         }
-        nav .logo { font-size: 1.3rem; font-weight: 700; letter-spacing: 0.5px; }
+        nav .logo { font-size: 1.3rem; font-weight: 700; }
         nav .logo a { color: white; text-decoration: none; }
         nav .nav-links a {
-            color: rgba(255,255,255,0.85);
-            text-decoration: none;
-            margin-right: 1.5rem;
-            font-size: 0.95rem;
-            padding: 0.4rem 0;
-            border-bottom: 2px solid transparent;
-            transition: var(--transition);
+            color: rgba(255,255,255,0.85); text-decoration: none;
+            margin-right: 1.5rem; font-size: 0.95rem;
+            padding: 0.4rem 0; border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
         }
         nav .nav-links a:hover, nav .nav-links a.active {
-            color: white;
-            border-bottom-color: var(--accent);
+            color: white; border-bottom-color: #ff6f00;
         }
         nav .user-menu { display: flex; align-items: center; gap: 1rem; }
         nav .user-menu span { font-size: 0.9rem; opacity: 0.9; }
         nav .user-menu a {
-            color: white;
-            text-decoration: none;
-            font-size: 0.9rem;
-            padding: 0.4rem 1rem;
-            border-radius: 6px;
-            transition: var(--transition);
+            color: white; text-decoration: none; font-size: 0.9rem;
+            padding: 0.4rem 1rem; border-radius: 6px; transition: all 0.3s ease;
         }
-        nav .user-menu a.btn-nav {
-            background: var(--accent);
-            font-weight: 600;
-        }
-        nav .user-menu a.btn-nav:hover { background: var(--accent-light); }
+        nav .user-menu a.btn-nav { background: #ff6f00; font-weight: 600; }
+        nav .user-menu a.btn-nav:hover { background: #ffa040; }
         nav .user-menu a:not(.btn-nav):hover { background: rgba(255,255,255,0.1); }
 
         .container { max-width: 1100px; margin: 2rem auto; padding: 0 1.5rem; flex: 1; }
 
         .card {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 2rem;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
+            background: white; border-radius: 12px; padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08); transition: all 0.3s ease;
         }
-        .card:hover { box-shadow: var(--shadow-hover); }
-        .card-flat { box-shadow: none; border: 1px solid #e8e8e8; }
-        .card-flat:hover { box-shadow: var(--shadow); }
+        .card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.15); }
 
-        h1, h2, h3 { color: var(--primary); margin-bottom: 0.75rem; }
+        h1, h2, h3 { color: #1a237e; margin-bottom: 0.75rem; }
         h1 { font-size: 1.8rem; }
         h2 { font-size: 1.4rem; }
         h3 { font-size: 1.15rem; }
-
         p { margin-bottom: 0.5rem; }
 
         .btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.6rem 1.8rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.95rem;
-            font-weight: 500;
-            text-decoration: none;
-            display: inline-block;
-            transition: var(--transition);
+            background: #1a237e; color: white; border: none;
+            padding: 0.6rem 1.8rem; border-radius: 6px; cursor: pointer;
+            font-size: 0.95rem; font-weight: 500; text-decoration: none;
+            display: inline-block; transition: all 0.3s ease;
         }
-        .btn:hover { background: var(--primary-light); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(26,35,126,0.3); }
-        .btn-accent { background: var(--accent); }
-        .btn-accent:hover { background: var(--accent-light); }
-        .btn-danger { background: var(--danger); }
+        .btn:hover { background: #283593; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(26,35,126,0.3); }
+        .btn-accent { background: #ff6f00; }
+        .btn-accent:hover { background: #ffa040; }
+        .btn-danger { background: #c62828; }
         .btn-danger:hover { background: #e53935; }
         .btn-sm { padding: 0.35rem 1rem; font-size: 0.85rem; }
-        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
-        .btn-outline:hover { background: var(--primary); color: white; }
 
-        .form-input, input[type="text"], input[type="password"], input[type="email"],
-        input[type="number"], input[type="date"], select, textarea {
-            width: 100%;
-            padding: 0.7rem 1rem;
+        input, select, textarea {
+            width: 100%; padding: 0.7rem 1rem;
             margin: 0.4rem 0 1rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            transition: var(--transition);
-            background: #fafafa;
-            font-family: inherit;
+            border: 2px solid #e0e0e0; border-radius: 8px;
+            font-size: 0.95rem; transition: all 0.3s ease;
+            background: #fafafa; font-family: inherit;
         }
-        .form-input:focus, input:focus, select:focus, textarea:focus {
-            border-color: var(--primary);
-            outline: none;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(26,35,126,0.1);
+        input:focus, select:focus, textarea:focus {
+            border-color: #1a237e; outline: none;
+            background: white; box-shadow: 0 0 0 3px rgba(26,35,126,0.1);
         }
-        label { font-weight: 600; font-size: 0.9rem; color: var(--text); display: block; margin-top: 0.5rem; }
+        label { font-weight: 600; font-size: 0.9rem; display: block; margin-top: 0.5rem; }
 
         .msg {
-            padding: 0.9rem 1.2rem;
-            border-radius: 8px;
-            margin-bottom: 1.2rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            padding: 0.9rem 1.2rem; border-radius: 8px;
+            margin-bottom: 1.2rem; font-weight: 500;
+            display: flex; align-items: center; gap: 0.5rem;
         }
-        .msg-success { background: #e8f5e9; color: var(--success); border-right: 4px solid var(--success); }
-        .msg-error { background: #ffebee; color: var(--danger); border-right: 4px solid var(--danger); }
+        .msg-success { background: #e8f5e9; color: #2e7d32; border-left: 4px solid #2e7d32; }
+        .msg-error { background: #ffebee; color: #c62828; border-left: 4px solid #c62828; }
 
-        .errorlist { color: var(--danger); list-style: none; font-size: 0.85rem; margin-bottom: 0.5rem; }
-        .help-text { font-size: 0.8rem; color: var(--text-light); margin-bottom: 0.5rem; display: block; }
+        .errorlist { color: #c62828; list-style: none; font-size: 0.85rem; margin-bottom: 0.5rem; }
 
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
 
         .badge {
-            display: inline-block;
-            padding: 0.2rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
+            display: inline-block; padding: 0.2rem 0.8rem;
+            border-radius: 20px; font-size: 0.8rem; font-weight: 600;
         }
-        .badge-success { background: #e8f5e9; color: var(--success); }
-        .badge-danger { background: #ffebee; color: var(--danger); }
+        .badge-success { background: #e8f5e9; color: #2e7d32; }
+        .badge-danger { background: #ffebee; color: #c62828; }
         .badge-warning { background: #fff8e1; color: #f57f17; }
         .badge-info { background: #e3f2fd; color: #1565c0; }
 
         footer {
-            background: var(--primary-dark);
-            color: rgba(255,255,255,0.7);
-            text-align: center;
-            padding: 1.5rem;
-            margin-top: 3rem;
+            background: #0d1442; color: rgba(255,255,255,0.7);
+            text-align: center; padding: 1.5rem; margin-top: 3rem;
             font-size: 0.85rem;
         }
 
         .search-section {
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            padding: 2.5rem;
-            border-radius: var(--radius);
-            margin-bottom: 2rem;
-            color: white;
+            background: linear-gradient(135deg, #1a237e, #283593);
+            padding: 2.5rem; border-radius: 12px; margin-bottom: 2rem; color: white;
         }
-        .search-section input { margin-bottom: 0; }
         .search-bar { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
         .search-input { flex: 1; min-width: 200px; }
+        .search-section input { margin-bottom: 0; }
         .filter-group { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 1rem; align-items: center; }
         .filter-group label { color: rgba(255,255,255,0.9); display: inline; margin: 0; }
-        .filter-range { width: 120px; vertical-align: middle; }
-        .star-range { width: 100%; }
 
         .stars { color: #f5a623; letter-spacing: 2px; }
         .stars-empty { color: #ddd; letter-spacing: 2px; }
@@ -201,10 +126,9 @@
 
         .avatar {
             width: 40px; height: 40px; border-radius: 50%;
-            background: var(--primary);
-            color: white;
+            background: #1a237e; color: white;
             display: flex; align-items: center; justify-content: center;
-            font-weight: 700; font-size: 1.1rem;
+            font-weight: 700; font-size: 1.1rem; flex-shrink: 0;
         }
 
         .flex { display: flex; }
@@ -215,45 +139,40 @@
         .mt-2 { margin-top: 1rem; }
         .mb-2 { margin-bottom: 1rem; }
         .text-center { text-align: center; }
-        .text-muted { color: var(--text-light); font-size: 0.9rem; }
+        .text-muted { color: #7f8c8d; font-size: 0.9rem; }
 
-        .stat {
-            text-align: center;
-            padding: 1rem;
-            background: #f8f9ff;
-            border-radius: 8px;
-        }
-        .stat-value { font-size: 1.8rem; font-weight: 700; color: var(--primary); }
-        .stat-label { font-size: 0.85rem; color: var(--text-light); }
+        .stat { text-align: center; padding: 1rem; background: #f8f9ff; border-radius: 8px; }
+        .stat-value { font-size: 1.8rem; font-weight: 700; color: #1a237e; }
+        .stat-label { font-size: 0.85rem; color: #7f8c8d; }
 
         @media (max-width: 768px) {
             .grid-2 { grid-template-columns: 1fr; }
             nav { flex-wrap: wrap; height: auto; padding: 0.8rem 1rem; gap: 0.5rem; }
             nav .nav-links a { margin-right: 0.8rem; font-size: 0.85rem; }
             .container { padding: 0 1rem; margin: 1rem auto; }
-            .search-bar { flex-direction: column; }
-            .filter-group { flex-direction: column; gap: 0.5rem; }
             .card { padding: 1.2rem; }
             h1 { font-size: 1.4rem; }
+            .search-bar { flex-direction: column; }
+            .filter-group { flex-direction: column; gap: 0.5rem; }
         }
     </style>
 </head>
 <body>
     <nav>
-        <div class="logo"><a href="/">🏨 نظام حجز الفنادق</a></div>
+        <div class="logo"><a href="/">Hotel Booking System</a></div>
         <div class="nav-links">
-            <a href="{% url 'hotel_list' %}">الفنادق</a>
+            <a href="{% url 'hotel_list' %}">Hotels</a>
             {% if user.is_authenticated %}
-                <a href="{% url 'my_bookings' %}">حجوزاتي</a>
+                <a href="{% url 'my_bookings' %}">My Bookings</a>
             {% endif %}
         </div>
         <div class="user-menu">
             {% if user.is_authenticated %}
-                <span>👋 {{ user.username }}</span>
-                <a href="{% url 'logout' %}">تسجيل الخروج</a>
+                <span>{{ user.username }}</span>
+                <a href="{% url 'logout' %}">Logout</a>
             {% else %}
-                <a href="{% url 'login' %}">دخول</a>
-                <a href="{% url 'register' %}" class="btn-nav">إنشاء حساب</a>
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}" class="btn-nav">Sign Up</a>
             {% endif %}
         </div>
     </nav>
@@ -268,7 +187,7 @@
     </div>
 
     <footer>
-        © 2026 نظام حجز الفنادق المتكامل | جميع الحقوق محفوظة
+        &copy; 2026 Hotel Booking System. All rights reserved.
     </footer>
 </body>
 </html>

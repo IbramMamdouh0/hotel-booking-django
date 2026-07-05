@@ -1,23 +1,23 @@
 {% extends 'base.html' %}
 {% block title %}{{ room.get_room_type_display }} - {{ hotel.name }}{% endblock %}
 {% block content %}
-<a href="{% url 'hotel_detail' hotel.id %}" style="color: var(--primary); text-decoration: none; display: inline-block; margin-bottom: 1rem;">← العودة للفندق</a>
+<a href="{% url 'hotel_detail' hotel.id %}" style="color: #1a237e; text-decoration: none; display: inline-block; margin-bottom: 1rem;">&larr; Back to hotel</a>
 
 <div class="grid-2">
     <div class="card">
         <h2>{{ room.get_room_type_display }}</h2>
-        <p class="text-muted">🏨 {{ hotel.name }}</p>
-        <p class="text-muted">🚪 رقم {{ room.room_number }}</p>
+        <p class="text-muted">{{ hotel.name }}</p>
+        <p class="text-muted">Room {{ room.room_number }}</p>
         <hr style="margin: 1rem 0; border: none; border-top: 1px solid #eee;">
         <div class="grid-2" style="gap: 0.8rem;">
-            <div class="stat"><div class="stat-value">👤</div><div class="stat-label">{{ room.capacity }} أشخاص</div></div>
-            <div class="stat"><div class="stat-value" style="color: var(--accent);">{{ room.price_per_night }}</div><div class="stat-label">ريال / الليلة</div></div>
+            <div class="stat"><div class="stat-value">{{ room.capacity }}</div><div class="stat-label">Guests</div></div>
+            <div class="stat"><div class="stat-value" style="color: #ff6f00;">${{ room.price_per_night }}</div><div class="stat-label">Per night</div></div>
         </div>
         <p style="margin-top: 1rem; line-height: 1.8;">{{ room.description }}</p>
     </div>
 
     <div class="card">
-        <h2>📅 حجز الغرفة</h2>
+        <h2>Book This Room</h2>
         {% if user.is_authenticated %}
         <form method="post" action="{% url 'create_booking' hotel.id room.id %}">
             {% csrf_token %}
@@ -28,14 +28,14 @@
                     <ul class="errorlist"><li>{{ error }}</li></ul>
                 {% endfor %}
             {% endfor %}
-            <button type="submit" class="btn btn-accent" style="width: 100%;">تأكيد الحجز</button>
+            <button type="submit" class="btn btn-accent" style="width: 100%;">Confirm Booking</button>
         </form>
         <div id="price-calc" style="margin-top: 1rem; padding: 1rem; background: #f8f9ff; border-radius: 8px; display: none;">
-            <div class="flex-between"><span>سعر الليلة:</span><span>{{ room.price_per_night }} ريال</span></div>
-            <div class="flex-between"><span>عدد الليالي:</span><span id="nights-count">0</span></div>
+            <div class="flex-between"><span>Price per night:</span><span>${{ room.price_per_night }}</span></div>
+            <div class="flex-between"><span>Nights:</span><span id="nights-count">0</span></div>
             <hr style="margin: 0.5rem 0;">
             <div class="flex-between" style="font-weight: 700; font-size: 1.1rem;">
-                <span>الإجمالي:</span><span id="total-price" style="color: var(--accent);">0 ريال</span>
+                <span>Total:</span><span id="total-price" style="color: #ff6f00;">$0</span>
             </div>
         </div>
         <script>
@@ -55,7 +55,7 @@
                     if (nights > 0) {
                         calc.style.display = 'block';
                         nightsSpan.textContent = nights;
-                        totalSpan.textContent = (pricePerNight * nights).toFixed(2) + ' ريال';
+                        totalSpan.textContent = '$' + (pricePerNight * nights).toFixed(2);
                     } else {
                         calc.style.display = 'none';
                     }
@@ -67,7 +67,7 @@
         </script>
         {% else %}
         <p class="text-center" style="padding: 2rem 0;">
-            <a href="{% url 'login' %}?next={{ request.path }}" class="btn">سجل الدخول لإتمام الحجز</a>
+            <a href="{% url 'login' %}?next={{ request.path }}" class="btn">Login to book this room</a>
         </p>
         {% endif %}
     </div>

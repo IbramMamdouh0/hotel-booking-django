@@ -1,25 +1,25 @@
 {% extends 'base.html' %}
-{% block title %}الرئيسية{% endblock %}
+{% block title %}Home{% endblock %}
 {% block content %}
 <div class="card" style="text-align: center; padding: 3rem 2rem;">
-    <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem;">🏨 نظام حجز الفنادق المتكامل</h1>
-    <p style="font-size: 1.1rem; color: var(--text-light); margin-bottom: 2rem;">أفضل الفنادق بأفضل الأسعار، احجز الآن واستمتع بإقامتك</p>
+    <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem;">Welcome to Hotel Booking System</h1>
+    <p style="font-size: 1.1rem; color: #7f8c8d; margin-bottom: 2rem;">Find and book the best hotels at the best prices</p>
 
     <div class="grid-3" style="margin: 2rem 0;">
-        <div class="stat"><div class="stat-value">🔍</div><div class="stat-label">ابحث عن الفندق المناسب</div></div>
-        <div class="stat"><div class="stat-value">💰</div><div class="stat-label">قارن الأسعار واختر الأفضل</div></div>
-        <div class="stat"><div class="stat-value">✅</div><div class="stat-label">احجز بضغطة زر</div></div>
+        <div class="stat"><div class="stat-value">Search</div><div class="stat-label">Find your perfect hotel</div></div>
+        <div class="stat"><div class="stat-value">Compare</div><div class="stat-label">Compare prices & pick the best</div></div>
+        <div class="stat"><div class="stat-value">Book</div><div class="stat-label">Book with one click</div></div>
     </div>
 
     {% if user.is_authenticated %}
         <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-            <a href="{% url 'hotel_list' %}" class="btn" style="padding: 0.8rem 2.5rem; font-size: 1.1rem;">تصفح الفنادق</a>
-            <a href="{% url 'my_bookings' %}" class="btn btn-accent" style="padding: 0.8rem 2.5rem; font-size: 1.1rem;">حجوزاتي</a>
+            <a href="{% url 'hotel_list' %}" class="btn" style="padding: 0.8rem 2.5rem; font-size: 1.1rem;">Browse Hotels</a>
+            <a href="{% url 'my_bookings' %}" class="btn btn-accent" style="padding: 0.8rem 2.5rem; font-size: 1.1rem;">My Bookings</a>
         </div>
     {% else %}
         <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-            <a href="{% url 'login' %}" class="btn" style="padding: 0.8rem 2.5rem; font-size: 1.1rem;">تسجيل الدخول</a>
-            <a href="{% url 'register' %}" class="btn btn-accent" style="padding: 0.8rem 2.5rem; font-size: 1.1rem;">إنشاء حساب جديد</a>
+            <a href="{% url 'login' %}" class="btn" style="padding: 0.8rem 2.5rem; font-size: 1.1rem;">Login</a>
+            <a href="{% url 'register' %}" class="btn btn-accent" style="padding: 0.8rem 2.5rem; font-size: 1.1rem;">Create Account</a>
         </div>
     {% endif %}
 </div>

@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
-{% block title %}حجوزاتي{% endblock %}
+{% block title %}My Bookings{% endblock %}
 {% block content %}
-<h1>📋 حجوزاتي</h1>
-<p class="text-muted mb-2">{{ bookings|length }} حجز</p>
+<h1>My Bookings</h1>
+<p class="text-muted mb-2">{{ bookings|length }} booking{% if bookings|length != 1 %}s{% endif %}</p>
 
 {% for booking in bookings %}
 <div class="card mb-2">
     <div class="flex-between">
         <div style="flex: 1;">
             <div class="flex-between">
-                <h3 style="margin: 0;">🏨 {{ booking.room.hotel.name }}</h3>
+                <h3 style="margin: 0;">{{ booking.room.hotel.name }}</h3>
                 <span class="badge
                     {% if booking.status == 'confirmed' %}badge-success
                     {% elif booking.status == 'cancelled' %}badge-danger
@@ -19,27 +19,27 @@
                 </span>
             </div>
             <p class="text-muted mt-1">
-                🛏️ {{ booking.room.get_room_type_display }} - رقم {{ booking.room.room_number }}
+                {{ booking.room.get_room_type_display }} &middot; Room {{ booking.room.room_number }}
             </p>
             <div class="grid-2" style="gap: 0.5rem; margin-top: 0.5rem; max-width: 400px;">
-                <div><strong>📅 الوصول:</strong> {{ booking.check_in }}</div>
-                <div><strong>📅 المغادرة:</strong> {{ booking.check_out }}</div>
-                <div><strong>💰 الإجمالي:</strong> <span style="color: var(--accent); font-weight: 700;">{{ booking.total_price }} ريال</span></div>
-                <div><strong>📆 تاريخ الحجز:</strong> {{ booking.created_at|date:"Y-m-d" }}</div>
+                <div><strong>Check-in:</strong> {{ booking.check_in }}</div>
+                <div><strong>Check-out:</strong> {{ booking.check_out }}</div>
+                <div><strong>Total:</strong> <span style="color: #ff6f00; font-weight: 700;">${{ booking.total_price }}</span></div>
+                <div><strong>Booked on:</strong> {{ booking.created_at|date:"Y-m-d" }}</div>
             </div>
         </div>
         {% if booking.status == 'pending' or booking.status == 'confirmed' %}
-        <div style="min-width: 100px; text-align: left;">
+        <div style="min-width: 100px; text-align: right;">
             <a href="{% url 'cancel_booking' booking.id %}" class="btn btn-danger btn-sm"
-               onclick="return confirm('هل أنت متأكد من إلغاء الحجز؟')">إلغاء</a>
+               onclick="return confirm('Are you sure you want to cancel this booking?')">Cancel</a>
         </div>
         {% endif %}
     </div>
 </div>
 {% empty %}
 <div class="card text-center" style="padding: 3rem;">
-    <p style="font-size: 1.2rem; color: var(--text-light);">😕 لا توجد حجوزات بعد</p>
-    <a href="{% url 'hotel_list' %}" class="btn mt-2">تصفح الفنادق والحجز</a>
+    <p style="font-size: 1.2rem; color: #7f8c8d;">No bookings yet</p>
+    <a href="{% url 'hotel_list' %}" class="btn mt-2">Browse hotels & book</a>
 </div>
 {% endfor %}
 {% endblock %}

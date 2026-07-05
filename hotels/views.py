@@ -56,7 +56,7 @@ def hotel_detail(request, hotel_id):
             review.user = request.user
             review.hotel = hotel
             review.save()
-            messages.success(request, "تم إرسال تقييمك بنجاح")
+            messages.success(request, "Your review has been submitted!")
             return redirect('hotel_detail', hotel_id=hotel.id)
     else:
         form = ReviewForm(instance=user_review)
@@ -86,12 +86,12 @@ def create_booking(request, hotel_id, room_id):
             check_out = form.cleaned_data['check_out']
 
             if check_in <= date.today():
-                messages.error(request, "تاريخ الوصول يجب أن يكون في المستقبل")
+                messages.error(request, "Check-in date must be in the future")
                 return render(request, 'hotels/room_detail.html', {'hotel': hotel, 'room': room, 'form': form})
 
             nights = (check_out - check_in).days
             if nights < 1:
-                messages.error(request, "يجب حجز ليلة واحدة على الأقل")
+                messages.error(request, "You must book at least one night")
                 return render(request, 'hotels/room_detail.html', {'hotel': hotel, 'room': room, 'form': form})
 
             overlapping = Booking.objects.filter(
@@ -99,7 +99,7 @@ def create_booking(request, hotel_id, room_id):
                 check_in__lt=check_out, check_out__gt=check_in,
             )
             if overlapping.exists():
-                messages.error(request, "الغرفة غير متاحة في هذه التواريخ")
+                messages.error(request, "This room is not available for the selected dates")
                 return render(request, 'hotels/room_detail.html', {'hotel': hotel, 'room': room, 'form': form})
 
             total = room.price_per_night * nights
@@ -107,7 +107,7 @@ def create_booking(request, hotel_id, room_id):
                 user=request.user, room=room,
                 check_in=check_in, check_out=check_out, total_price=total,
             )
-            messages.success(request, "🎉 تم تأكيد الحجز بنجاح!")
+            messages.success(request, "Booking confirmed successfully!")
             return redirect('my_bookings')
 
     return render(request, 'hotels/room_detail.html', {'hotel': hotel, 'room': room, 'form': BookingForm()})
@@ -125,7 +125,7 @@ def cancel_booking(request, booking_id):
     if booking.status in ['pending', 'confirmed']:
         booking.status = 'cancelled'
         booking.save()
-        messages.success(request, "تم إلغاء الحجز")
+        messages.success(request, "Booking cancelled")
     else:
-        messages.error(request, "لا يمكن إلغاء هذا الحجز")
+        messages.error(request, "This booking cannot be cancelled")
     return redirect('my_bookings')

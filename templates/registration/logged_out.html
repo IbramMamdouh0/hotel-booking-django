@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
-{% block title %}تسجيل الخروج{% endblock %}
+{% block title %}Logged Out{% endblock %}
 {% block content %}
 <div class="card" style="max-width: 420px; margin: 3rem auto; text-align: center;">
-    <h2>🚪 تم تسجيل الخروج</h2>
-    <p style="color: var(--text-light); margin: 1rem 0;">نتمنى لك يوماً سعيداً!</p>
-    <a href="{% url 'login' %}" class="btn">تسجيل الدخول مرة أخرى</a>
+    <h2>You've been logged out</h2>
+    <p style="color: #7f8c8d; margin: 1rem 0;">Hope to see you again soon!</p>
+    <a href="{% url 'login' %}" class="btn">Login again</a>
 </div>
 {% endblock %}
