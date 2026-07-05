@@ -29,8 +29,8 @@ class Hotel(models.Model):
         return self.name
 
     def avg_rating(self):
-        result = self.reviews.aggregate(avg=Avg('rating'))
-        return round(result['avg'], 1) if result['avg'] else self.rating
+        avg = self.reviews.aggregate(Avg('rating'))['rating__avg']
+        return round(avg, 1) if avg else self.rating
 
     def reviews_count(self):
         return self.reviews.count()
