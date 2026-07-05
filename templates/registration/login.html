@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}تسجيل الدخول{% endblock %}
+{% block content %}
+<div class="card" style="max-width: 420px; margin: 3rem auto;">
+    <h2 style="text-align: center;">🔐 تسجيل الدخول</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <label>{{ field.label }}</label>
+            {{ field }}
+            {% for error in field.errors %}
+                <ul class="errorlist"><li>{{ error }}</li></ul>
+            {% endfor %}
+        {% endfor %}
+        <button type="submit" class="btn" style="width: 100%; margin-top: 0.5rem;">دخول</button>
+    </form>
+    <p style="text-align: center; margin-top: 1.5rem;">
+        ليس لديك حساب؟ <a href="{% url 'register' %}" style="color: var(--primary); font-weight: 600;">إنشاء حساب جديد</a>
+    </p>
+</div>
+{% endblock %}

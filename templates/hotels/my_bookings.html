@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}حجوزاتي{% endblock %}
+{% block content %}
+<h1>📋 حجوزاتي</h1>
+<p class="text-muted mb-2">{{ bookings|length }} حجز</p>
+
+{% for booking in bookings %}
+<div class="card mb-2">
+    <div class="flex-between">
+        <div style="flex: 1;">
+            <div class="flex-between">
+                <h3 style="margin: 0;">🏨 {{ booking.room.hotel.name }}</h3>
+                <span class="badge
+                    {% if booking.status == 'confirmed' %}badge-success
+                    {% elif booking.status == 'cancelled' %}badge-danger
+                    {% elif booking.status == 'completed' %}badge-info
+                    {% else %}badge-warning{% endif %}">
+                    {{ booking.get_status_display }}
+                </span>
+            </div>
+            <p class="text-muted mt-1">
+                🛏️ {{ booking.room.get_room_type_display }} - رقم {{ booking.room.room_number }}
+            </p>
+            <div class="grid-2" style="gap: 0.5rem; margin-top: 0.5rem; max-width: 400px;">
+                <div><strong>📅 الوصول:</strong> {{ booking.check_in }}</div>
+                <div><strong>📅 المغادرة:</strong> {{ booking.check_out }}</div>
+                <div><strong>💰 الإجمالي:</strong> <span style="color: var(--accent); font-weight: 700;">{{ booking.total_price }} ريال</span></div>
+                <div><strong>📆 تاريخ الحجز:</strong> {{ booking.created_at|date:"Y-m-d" }}</div>
+            </div>
+        </div>
+        {% if booking.status == 'pending' or booking.status == 'confirmed' %}
+        <div style="min-width: 100px; text-align: left;">
+            <a href="{% url 'cancel_booking' booking.id %}" class="btn btn-danger btn-sm"
+               onclick="return confirm('هل أنت متأكد من إلغاء الحجز؟')">إلغاء</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% empty %}
+<div class="card text-center" style="padding: 3rem;">
+    <p style="font-size: 1.2rem; color: var(--text-light);">😕 لا توجد حجوزات بعد</p>
+    <a href="{% url 'hotel_list' %}" class="btn mt-2">تصفح الفنادق والحجز</a>
+</div>
+{% endfor %}
+{% endblock %}

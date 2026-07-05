@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}الرئيسية{% endblock %}
+{% block content %}
+<div class="card" style="text-align: center; padding: 3rem 2rem;">
+    <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem;">🏨 نظام حجز الفنادق المتكامل</h1>
+    <p style="font-size: 1.1rem; color: var(--text-light); margin-bottom: 2rem;">أفضل الفنادق بأفضل الأسعار، احجز الآن واستمتع بإقامتك</p>
+
+    <div class="grid-3" style="margin: 2rem 0;">
+        <div class="stat"><div class="stat-value">🔍</div><div class="stat-label">ابحث عن الفندق المناسب</div></div>
+        <div class="stat"><div class="stat-value">💰</div><div class="stat-label">قارن الأسعار واختر الأفضل</div></div>
+        <div class="stat"><div class="stat-value">✅</div><div class="stat-label">احجز بضغطة زر</div></div>
+    </div>
+
+    {% if user.is_authenticated %}
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="{% url 'hotel_list' %}" class="btn" style="padding: 0.8rem 2.5rem; font-size: 1.1rem;">تصفح الفنادق</a>
+            <a href="{% url 'my_bookings' %}" class="btn btn-accent" style="padding: 0.8rem 2.5rem; font-size: 1.1rem;">حجوزاتي</a>
+        </div>
+    {% else %}
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="{% url 'login' %}" class="btn" style="padding: 0.8rem 2.5rem; font-size: 1.1rem;">تسجيل الدخول</a>
+            <a href="{% url 'register' %}" class="btn btn-accent" style="padding: 0.8rem 2.5rem; font-size: 1.1rem;">إنشاء حساب جديد</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
