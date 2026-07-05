@@ -2,6 +2,12 @@ services:
   - type: web
     name: hotel-booking-django
     runtime: python
+    repo: https://github.com/IbramMamdouh0/hotel-booking-django
+    branch: main
+    region: oregon
+    plan: free
+    autoDeploy: true
+    healthCheckPath: /
     buildCommand: ./build.sh
     startCommand: gunicorn core.wsgi:application --bind 0.0.0.0:$PORT
     envVars:
@@ -9,3 +15,14 @@ services:
         generateValue: true
       - key: DEBUG
         value: "False"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: hotel-booking-db
+          property: connectionString
+
+databases:
+  - name: hotel-booking-db
+    region: oregon
+    plan: free
+    databaseName: hotel_booking
+    user: hotel_booking_user
