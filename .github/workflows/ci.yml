@@ -9,6 +9,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      SECRET_KEY: test-key-not-for-production
+      DEBUG: "False"
+      DATABASE_URL: sqlite:///db.sqlite3
     strategy:
       matrix:
         python-version: ["3.13"]
@@ -31,7 +35,3 @@ jobs:
 
       - name: Run tests
         run: python manage.py test
-        env:
-          SECRET_KEY: test-key-not-for-production
-          DEBUG: "False"
-          DATABASE_URL: sqlite:///db.sqlite3
