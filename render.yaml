@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: hotel-booking-django
+    runtime: python
+    repo: https://github.com/IbramMamdouh0/hotel-booking-django
+    branch: main
+    region: oregon
+    plan: free
+    autoDeploy: true
+    healthCheckPath: /
+    buildCommand: ./build.sh
+    startCommand: gunicorn core.wsgi:application --bind 0.0.0.0:$PORT
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      # RENDER_EXTERNAL_HOSTNAME is added automatically by settings.py.
+      # Add any custom domains to this list, comma-separated.
+      - key: ALLOWED_HOSTS
+        value: localhost,127.0.0.1
+      - key: DATABASE_URL
+        fromDatabase:
+          name: hotel-booking-db
+          property: connectionString
+
+databases:
+  - name: hotel-booking-db
+    region: oregon
+    plan: free
+    databaseName: hotel_booking
+    user: hotel_booking_user
