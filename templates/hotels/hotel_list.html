@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title %}Hotels{% endblock %}
+{% block content %}
+<div class="search-section">
+    <form method="get">
+        <div class="search-bar">
+            {{ form.q }}
+            <button type="submit" class="btn btn-accent">Search</button>
+        </div>
+        <div class="filter-group">
+            <div>
+                <label>Rating: <span id="rating-val">{{ form.rating_min.value|default:1 }}</span></label>
+                {{ form.rating_min }}
+            </div>
+            <div>
+                <label>Max price / night</label>
+                {{ form.price_max }}
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const range = document.querySelector('.filter-range');
+    const val = document.getElementById('rating-val');
+    if (range && val) {
+        range.addEventListener('input', function() { val.textContent = this.value; });
+    }
+});
+</script>
+
+<h1>Available Hotels</h1>
+<p class="text-muted mb-2">{{ hotels|length }} hotel{% if hotels|length != 1 %}s{% endif %}</p>
+
+<div class="grid-3">
+    {% for hotel in hotels %}
+    <div class="card" style="overflow: hidden; padding: 0;">
+        {% if hotel.image %}
+        <div style="height: 200px; overflow: hidden;">
+            <img src="{{ hotel.image }}" alt="{{ hotel.name }}"
+                 style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        {% else %}
+        <div style="height: 200px; background: linear-gradient(135deg, #1a237e, #283593);
+                    display: flex; align-items: center; justify-content: center; font-size: 4rem;">
+            Hotel
+        </div>
+        {% endif %}
+        <div style="padding: 1.5rem;">
+            <div class="flex-between">
+                <h3 style="margin: 0;">{{ hotel.name }}</h3>
+                <span class="badge badge-info">{{ hotel.avg_rating }} stars</span>
+            </div>
+            <p class="text-muted" style="font-size: 0.85rem;">{{ hotel.address }}</p>
+
+            <div class="stars" style="margin: 0.5rem 0;">
+                {% for i in "12345"|make_list %}
+                    {% if forloop.counter <= hotel.rating %}&#9733;{% else %}<span class="stars-empty">&#9733;</span>{% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="flex-between mt-1">
+                <span style="font-size: 0.9rem;">{{ hotel.rooms.count }} room{% if hotel.rooms.count != 1 %}s{% endif %}</span>
+                {% if hotel.min_price %}
+                    <span style="color: #ff6f00; font-weight: 700;">From ${{ hotel.min_price }}</span>
+                {% endif %}
+            </div>
+
+            <a href="{% url 'hotel_detail' hotel.id %}" class="btn" style="width: 100%; text-align: center; margin-top: 1rem;">
+                View Details
+            </a>
+        </div>
+    </div>
+    {% empty %}
+    <div class="card text-center" style="grid-column: 1/-1; padding: 3rem;">
+        <p style="font-size: 1.2rem; color: #7f8c8d;">No hotels match your search</p>
+        <a href="{% url 'hotel_list' %}" class="btn mt-2">Reset search</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
